@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto/presentation/providers/user_provider.dart';
+import 'package:proyecto/viewmodels/providers/medicine_provider.dart';
+
+import '../../viewmodels/providers/user_provider.dart';
 import 'register_page.dart';
 
 //Manejamos un estado de tipo StateFulWidget porque es una pagina que solo se necesita construir una vez
@@ -42,8 +44,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: myIndex ,
         items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home', backgroundColor: Colors.amber),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Register', backgroundColor: Colors.indigo),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Salida')
+        BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'Register', backgroundColor: Colors.indigo),
       ],
 
       ),
@@ -182,7 +183,7 @@ class _CustomCardState extends State<CustomCard> {
         children: [
           // Imagen de fondo
           Ink.image(
-            image: NetworkImage('https://images.unsplash.com/photo-1576086213794-68bc93a8d179?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzODQxNjZ8MHwxfHNlYXJjaHwxNXx8bWVkaWNpbmV8ZW58MHx8fHwxNjQzODk4MTI1&ixlib=rb-1.2.1&q=80&w=1080'),
+            image: NetworkImage('https://www.fahorro.com/media/catalog/product/7/5/7501095452116_4.jpg?optimize=medium&bg-color=255,255,255&fit=bounds&height=502&width=502&canvas=502:502'),
             height: 200,
             fit: BoxFit.cover,
           ),
@@ -217,21 +218,39 @@ class _CustomCardState extends State<CustomCard> {
                     });
                   },
                 ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  height: _expanded ? 80 : 0,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
+
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    height: _expanded ? 80 : 0, // Podrías necesitar un 'height' un poco mayor si el texto es largo
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.9),
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(12),
+                    top: Radius.circular(12),
                     ),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      "Lunes - 9:00 A.M y Miercoles - 5:00 P.M",
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                      textAlign: TextAlign.center,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column( // Cambiamos a Column para mostrar dos líneas de texto
+                      mainAxisSize: MainAxisSize.min, // Ajusta la columna a su contenido
+                        children: [
+                        // 1. Nombre del Medicamento
+                          Text(
+                          context.watch<MedicineProvider>().currentMedicine?.nombre ?? 'Aún no hay medicamentos registrados',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87), // Lo hacemos más visible
+                          textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 4), // Separación entre nombre y horario
+
+                          // 2. Horario del Medicamento
+                          Text(
+                          // Si currentMedicine no es null, muestra el horario. Si es null, muestra una cadena vacía.
+                          context.watch<MedicineProvider>().currentMedicine?.horario != null
+                          ? 'Horario: ${context.watch<MedicineProvider>().currentMedicine!.horario}'
+                              : '',
+                          style: TextStyle(fontSize: 14, color: Colors.blue[800]), // Usamos el color principal de la app
+                          textAlign: TextAlign.center,
+                          ),
+                      ],
                     ),
                   ),
                 ),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/viewmodels/providers/medicine_provider.dart';
+
+import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -10,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _medicineController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+
 
   void _registerMedicine() {
     String medicineName = _medicineController.text;
@@ -95,7 +100,23 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         // Botón para registrar medicamento
                         ElevatedButton.icon(
-                          onPressed: _registerMedicine,
+                          onPressed: (){
+                            // **USAR context.read** para llamar a un método y actualizar el estado
+                            context.read<MedicineProvider>().saveMedicine(
+                              nombre: _medicineController.text.trim(),
+                              horario: _timeController.text.trim(),
+                            );
+
+                            // Limpia los campos
+                            _medicineController.clear();
+                            _timeController.clear();
+
+                            // Regresa a la página anterior o a la HomePage
+                            Navigator.pop(context); // Usar pop para regresar es más común si la HomePage ya estaba en el stack
+
+                            // Si realmente quieres un reemplazo, usa:
+                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                          },
                           icon: const Icon(Icons.add_task),
                           label: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 15.0),

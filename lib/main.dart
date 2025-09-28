@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/presentation/pages/home_page.dart';
+import 'package:proyecto/viewmodels/providers/medicine_provider.dart';
+import 'package:proyecto/viewmodels/providers/user_provider.dart';
+import 'package:proyecto/views/pages/home_page.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto/presentation/pages/setting_page.dart';
-import 'package:proyecto/presentation/providers/user_provider.dart';
+import 'package:proyecto/views/pages/setting_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context){
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context)=> MedicineProvider())
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,

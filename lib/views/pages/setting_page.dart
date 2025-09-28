@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto/presentation/providers/user_provider.dart';
+import '../../viewmodels/providers/user_provider.dart';
 import 'home_page.dart'; // Asegúrate de que esta ruta sea correcta
 
 class SettingPage extends StatefulWidget {
@@ -18,9 +18,6 @@ class _SettingPageState extends State<SettingPage>{
     super.initState();
     // Inicializa el controlador
     userNameController = TextEditingController();
-
-    // Opcional: Cargar el nombre de usuario actual en el campo
-    // Se hace en build() después de watch, o aquí si usas context.read()
   }
 
   @override
